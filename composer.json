@@ -1,0 +1,25 @@
+{
+    "name": "space48/cmscontent",
+    "description": "This is a Magento2 module to programmatically create and update CMS content.",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+        "proprietary"
+    ],
+    "require": {
+        "php": "~7.0.0",
+            "magento/framework": "100.0.*|100.1.*"
+        },
+    "require-dev": {
+        "magento/marketplace-eqp": "~1.0.5",
+        "phpunit/phpunit": "4.1.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Space48\\CmsContent\\": ""
+        }
+    }
+}
