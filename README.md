@@ -49,3 +49,50 @@ Take a look to `/Setup/UpgradeData.php`, there is an example of how to create a 
         }
 ```
 Modify as you need and once you finished run `php bin/magento setup:upgrade` to install the module and add the CMS Blocks/Pages you have previously defined to the Database.
+
+## Need to create multiple Pages and Blocks?
+
+```php
+        if (version_compare($context->getVersion(), '1.0.0', '<')) {
+            // CMS Pages
+            $newPage = [
+                'title'           => 'Test page title1',
+                'identifier'      => 'test-page1',
+                'stores'          => [0],
+                'is_active'       => 1,
+                'content_heading' => 'Test page heading1',
+                'content'         => 'Test page content1',
+                'page_layout'     => '1column'
+            ];
+            $this->pageFactory->create()->setData($newPage)->save();
+
+            $newPage = [
+                'title'           => 'Test page title2',
+                'identifier'      => 'test-page2',
+                'stores'          => [0],
+                'is_active'       => 1,
+                'content_heading' => 'Test page heading2',
+                'content'         => 'Test page content2',
+                'page_layout'     => '1column'
+            ];
+            $this->pageFactory->create()->setData($newPage)->save();
+            
+            // CMS Blocks
+            $newBlock = [
+                'title'      => 'Test block title1',
+                'identifier' => 'test-block1',
+                'stores'     => [0],
+                'is_active'  => 1,
+                'content'    => 'Sample content'
+            ];
+            $this->blockFactory->create()->setData($newBlock)->save();
+            $newBlock = [
+                'title'      => 'Test block title2',
+                'identifier' => 'test-block2',
+                'stores'     => [0],
+                'is_active'  => 1,
+                'content'    => 'Sample content'
+            ];
+            $this->blockFactory->create()->setData($newBlock)->save();
+        }
+```
