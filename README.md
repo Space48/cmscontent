@@ -110,7 +110,8 @@ if (version_compare($context->getVersion(), '1.1.0', '<')) {
         }
 ```
 Make sure you update the module version in your project `/etc/module.xml`.
-Exaple:
+
+###Exaple:
 
 From:
 
