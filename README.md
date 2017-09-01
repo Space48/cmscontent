@@ -96,3 +96,21 @@ Modify as you need and once you finished run `php bin/magento setup:upgrade` to 
             $this->blockFactory->create()->setData($newBlock)->save();
         }
 ```
+## Need to update multiple times?
+```php
+if (version_compare($context->getVersion(), '1.0.0', '<')) {
+
+                ...
+
+        }
+if (version_compare($context->getVersion(), '1.1.0', '<')) {
+
+                ...
+
+        }
+```
+Make sure you update the module version in your project `/etc/module.xml`.
+Exaple:
+~`<module name="Space48_CmsContent" setup_version="1.0.0">`
+to
+`<module name="Space48_CmsContent" setup_version="1.1.0">`
