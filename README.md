@@ -111,6 +111,10 @@ if (version_compare($context->getVersion(), '1.1.0', '<')) {
 ```
 Make sure you update the module version in your project `/etc/module.xml`.
 Exaple:
-~`<module name="Space48_CmsContent" setup_version="1.0.0">`
+
+From
+`<module name="Space48_CmsContent" setup_version="1.0.0">`
+
 to
+
 `<module name="Space48_CmsContent" setup_version="1.1.0">`
