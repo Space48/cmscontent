@@ -10,8 +10,13 @@ declare(strict_types=1);
 
 namespace Space48\CmsContent\Setup;
 
-use Magento\Cms\Model\BlockFactory;
-use Magento\Cms\Model\PageFactory;
+use Magento\Cms\Api\BlockRepositoryInterface;
+use Magento\Cms\Api\Data\BlockInterface;
+use Magento\Cms\Api\Data\BlockInterfaceFactory;
+use Magento\Cms\Api\Data\PageInterface;
+use Magento\Cms\Api\Data\PageInterfaceFactory;
+use Magento\Cms\Api\PageRepositoryInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
@@ -20,26 +25,41 @@ class UpgradeData implements UpgradeDataInterface
 {
 
     /**
-     * @var PageFactory
+     * @var BlockRepositoryInterface
      */
-    private $pageFactory;
+    private $blockRepository;
     /**
-     * @var BlockFactory
+     * @var BlockInterfaceFactory
      */
-    private $blockFactory;
+    private $blockInterfaceFactory;
+    /**
+     * @var PageRepositoryInterface
+     */
+    private $pageRepository;
+    /**
+     * @var PageInterfaceFactory
+     */
+    private $pageInterfaceFactory;
 
     /**
      * UpgradeData constructor.
      *
-     * @param PageFactory  $pageFactory
-     * @param BlockFactory $blockFactory
+     * @param BlockRepositoryInterface $blockRepository
+     * @param BlockInterfaceFactory    $blockInterfaceFactory
+     * @param PageRepositoryInterface  $pageRepository
+     * @param PageInterfaceFactory     $pageInterfaceFactory
      */
     public function __construct(
-        PageFactory $pageFactory,
-        BlockFactory $blockFactory
+
+        BlockRepositoryInterface $blockRepository,
+        BlockInterfaceFactory $blockInterfaceFactory,
+        PageRepositoryInterface $pageRepository,
+        PageInterfaceFactory $pageInterfaceFactory
     ) {
-        $this->pageFactory = $pageFactory;
-        $this->blockFactory = $blockFactory;
+        $this->blockRepository = $blockRepository;
+        $this->blockInterfaceFactory = $blockInterfaceFactory;
+        $this->pageRepository = $pageRepository;
+        $this->pageInterfaceFactory = $pageInterfaceFactory;
     }
 
     /**
@@ -48,31 +68,54 @@ class UpgradeData implements UpgradeDataInterface
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface   $context
      *
+     * @throws LocalizedException
      * @return void
      */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         if (version_compare($context->getVersion(), '1.0.0', '<')) {
-
-            $newPage = [
-                'title'           => 'Test page title',
-                'identifier'      => 'test-page',
-                'stores'          => [0],
-                'is_active'       => 1,
-                'content_heading' => 'Test page heading',
-                'content'         => 'Test page content',
-                'page_layout'     => '1column'
-            ];
-            $this->pageFactory->create()->setData($newPage)->save();
-
-            $newBlock = [
-                'title'      => 'Test block title',
-                'identifier' => 'test-block',
-                'stores'     => [0],
-                'is_active'  => 1,
-            ];
-            $this->blockFactory->create()->setData($newBlock)->save();
-
+            if ($setup->tableExists('cms_block')) {
+                $this->createCmsBlock();
+            }
+            if ($setup->tableExists('cms_page')) {
+                $this->createCmsPage();
+            }
         }
+    }
+
+    /**
+     * @throws LocalizedException
+     * @return void
+     */
+    protected function createCmsBlock()
+    {
+        /** @var BlockInterface $cmsBlock */
+        $cmsBlock = $this->blockInterfaceFactory->create();
+        $cmsBlock
+            ->setIdentifier('block-identifier')
+            ->setTitle('Block Title')
+            ->setContent('Block Content')
+            ->setData('stores', [0]);
+
+        $this->blockRepository->save($cmsBlock);
+    }
+
+    /**
+     * @return void
+     * @throws LocalizedException
+     */
+    protected function createCmsPage()
+    {
+        /** @var PageInterface $cmsPage */
+        $cmsPage = $this->pageInterfaceFactory->create();
+        $cmsPage
+            ->setIdentifier('page-identifier')
+            ->setTitle('Page Title')
+            ->setContentHeading('Content Heading')
+            ->setContent('Page content')
+            ->setPageLayout('1column')
+            ->setData('stores', [0]);
+
+        $this->pageRepository->save($cmsPage);
     }
 }

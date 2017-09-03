@@ -1,13 +1,13 @@
 {
     "name": "space48/cmscontent",
-    "description": "This is a Magento2 module to programmatically create and update CMS content.",
+    "description": "This is a Magento2 module to programmatically create CMS content.",
     "type": "magento2-module",
     "version": "1.0.0",
     "license": [
         "proprietary"
     ],
      "repositories": {
-        "0": {
+        "magento": {
             "type": "composer",
             "url": "https://repo.magento.com/"
         }
