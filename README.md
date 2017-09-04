@@ -22,10 +22,10 @@ then
 `composer require "space48/cmscontent:{release-version}"`
 
 ## How to use it
-Take a look to `/Setup/UpgradeData.php`, there is an example of how to create a CMS Block and a CMS Page.
+Take a look at `/Setup/UpgradeData.php`, there is a sample code that creates a dummy CMS Block and a dummy CMS Page.
 
 ```php
-        if (version_compare($context->getVersion(), '1.0.0', '<')) {
+        if (version_compare($context->getVersion(), '1.1.0', '<')) {
 
             $newPage = [
                 'title'           => 'Test page title',
@@ -48,12 +48,18 @@ Take a look to `/Setup/UpgradeData.php`, there is an example of how to create a 
 
         }
 ```
-Modify as you need and once you finished run `php bin/magento setup:upgrade` to install the module and add the CMS Blocks/Pages you have previously defined to the Database.
+Modify this sample to meet your need and when you finished, upgrade the module version in `/etc/module.xml` as shown bellow:
+
+```xml
+<module name="Space48_CmsContent" setup_version="1.1.0">
+```
+
+Finally run `php bin/magento setup:upgrade` to install the module and add to the database the CMS Blocks/Pages you have previously defined.
 
 ## Need to create multiple Pages and Blocks?
 
 ```php
-        if (version_compare($context->getVersion(), '1.0.0', '<')) {
+        if (version_compare($context->getVersion(), '1.1.0', '=')) {
             // CMS Pages
             $newPage = [
                 'title'           => 'Test page title1',
@@ -98,25 +104,25 @@ Modify as you need and once you finished run `php bin/magento setup:upgrade` to 
 ```
 ## Need to update multiple times?
 ```php
-if (version_compare($context->getVersion(), '1.0.0', '<')) {
+if (version_compare($context->getVersion(), '1.2.0', '=')) {
 
                 ...
 
         }
-if (version_compare($context->getVersion(), '1.1.0', '<')) {
+if (version_compare($context->getVersion(), '1.3.0', '=')) {
 
                 ...
 
         }
 ```
-Make sure you update the module version in your project `/etc/module.xml`.
+Make sure you update the version in `/etc/module.xml` accordingly.
 
 ### Example:
 
 From:
 
-`<module name="Space48_CmsContent" setup_version="1.0.0">`
+`<module name="Space48_CmsContent" setup_version="1.2.0">`
 
 to:
 
-`<module name="Space48_CmsContent" setup_version="1.1.0">`
+`<module name="Space48_CmsContent" setup_version="1.3.0">`
