@@ -25,7 +25,7 @@ then
 Take a look at `/Setup/UpgradeData.php`, there is a sample code that creates a dummy CMS Block and a dummy CMS Page.
 
 ```php
-        if (version_compare($context->getVersion(), '1.1.0', '<')) {
+        if (version_compare($context->getVersion(), '1.1.0', '=')) {
 
             $newPage = [
                 'title'           => 'Test page title',
