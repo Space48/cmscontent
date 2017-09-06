@@ -73,49 +73,31 @@ class UpgradeData implements UpgradeDataInterface
      */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($context->getVersion(), '1.1.0', '<')) {
+        if (version_compare($context->getVersion(), '1.1.0', '=')) {
             if ($setup->tableExists('cms_block')) {
-                $this->createCmsBlock();
+                /** @var BlockInterface $cmsBlock */
+                $cmsBlock = $this->blockInterfaceFactory->create();
+                $cmsBlock
+                    ->setIdentifier('block-identifier')
+                    ->setTitle('Block Title')
+                    ->setContent('Block Content')
+                    ->setData('stores', [0]);
+
+                $this->blockRepository->save($cmsBlock);
             }
             if ($setup->tableExists('cms_page')) {
-                $this->createCmsPage();
+                /** @var PageInterface $cmsPage */
+                $cmsPage = $this->pageInterfaceFactory->create();
+                $cmsPage
+                    ->setIdentifier('page-identifier')
+                    ->setTitle('Page Title')
+                    ->setContentHeading('Content Heading')
+                    ->setContent('Page content')
+                    ->setPageLayout('1column')
+                    ->setData('stores', [0]);
+
+                $this->pageRepository->save($cmsPage);
             }
         }
-    }
-
-    /**
-     * @throws LocalizedException
-     * @return void
-     */
-    protected function createCmsBlock()
-    {
-        /** @var BlockInterface $cmsBlock */
-        $cmsBlock = $this->blockInterfaceFactory->create();
-        $cmsBlock
-            ->setIdentifier('block-identifier')
-            ->setTitle('Block Title')
-            ->setContent('Block Content')
-            ->setData('stores', [0]);
-
-        $this->blockRepository->save($cmsBlock);
-    }
-
-    /**
-     * @return void
-     * @throws LocalizedException
-     */
-    protected function createCmsPage()
-    {
-        /** @var PageInterface $cmsPage */
-        $cmsPage = $this->pageInterfaceFactory->create();
-        $cmsPage
-            ->setIdentifier('page-identifier')
-            ->setTitle('Page Title')
-            ->setContentHeading('Content Heading')
-            ->setContent('Page content')
-            ->setPageLayout('1column')
-            ->setData('stores', [0]);
-
-        $this->pageRepository->save($cmsPage);
     }
 }
