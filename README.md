@@ -3,7 +3,7 @@
 [![Build Status](https://scrutinizer-ci.com/g/Space48/cmscontent/badges/build.png?b=master&s=ea037c357a0630745b155e04ac62102d0ccabd20)](https://scrutinizer-ci.com/g/Space48/cmscontent/build-status/master)
 [![Code Coverage](https://scrutinizer-ci.com/g/Space48/cmscontent/badges/coverage.png?b=master&s=c0181361e9ef048554f358b212b9f27937e1c6bd)](https://scrutinizer-ci.com/g/Space48/cmscontent/?branch=master)
 
-This is a Magento2 module to programmatically create and update CMS content.
+This is a Magento2 module to import and export CMS content.
 
 ## Installation
 
@@ -22,107 +22,47 @@ then
 `composer require "space48/cmscontent:{release-version}"`
 
 ## How to use it
-Take a look at `/Setup/UpgradeData.php`, there is a sample code that creates a dummy CMS Block and a dummy CMS Page.
+This is a CLI Tool so you can use as part of `bin/magento` or `magerun2` options.
+This tool add the following Space48 commands:
+- space48:cms-content:import
+- space48:cms-content:export
+- space48:cms-content:delete
 
-```php
-        if (version_compare($context->getVersion(), '1.1.0', '=')) {
+## Commands
+### space48:cms-content:import {argument}
+This command will **import** CMS Pages and Blocks from csv files to the database.
+The csv files need to be placed into `vendor/space48/cmscontent/fixtures`.
 
-            $newPage = [
-                'title'           => 'Test page title',
-                'identifier'      => 'test-page',
-                'stores'          => [0],
-                'is_active'       => 1,
-                'content_heading' => 'Test page heading',
-                'content'         => 'Test page content',
-                'page_layout'     => '1column'
-            ];
-            $this->pageFactory->create()->setData($newPage)->save();
+If the CMS Page or Block does not exists it will created and if it doesn't it will update it.
 
-            $newBlock = [
-                'title'      => 'Test block title',
-                'identifier' => 'test-block',
-                'stores'     => [0],
-                'is_active'  => 1,
-            ];
-            $this->blockFactory->create()->setData($newBlock)->save();
+```bash
+Usage:
+ space48:cms-content:import cmsType
 
-        }
+Arguments:
+ cmsType               pages, blocks, all
+    
 ```
-Modify this sample to meet your need and when you finished, upgrade the module version in `/etc/module.xml` as shown bellow:
+### space48:cms-content:export {argument}
+This command will **export** CMS Pages and Blocks from the database to a csv files.
+The generated files can be found under `vendor/space48/cmscontent/fixtures`.
 
-```xml
-<module name="Space48_CmsContent" setup_version="1.1.0">
+```bash
+Usage:
+ space48:cms-content:export cmsType
+
+Arguments:
+ cmsType               pages, blocks, all
+    
 ```
+### space48:cms-content:delete {argument}
+This command can be use to **delete** CMS Pages and Blocks.
 
-Finally run `php bin/magento setup:upgrade` to install the module and add to the database the CMS Blocks/Pages you have previously defined.
+```bash
+Usage:
+ space48:cms-content:delete cmsType
 
-## Need to create multiple Pages and Blocks?
-
-```php
-        if (version_compare($context->getVersion(), '1.1.0', '=')) {
-            // CMS Pages
-            $newPage = [
-                'title'           => 'Test page title1',
-                'identifier'      => 'test-page1',
-                'stores'          => [0],
-                'is_active'       => 1,
-                'content_heading' => 'Test page heading1',
-                'content'         => 'Test page content1',
-                'page_layout'     => '1column'
-            ];
-            $this->pageFactory->create()->setData($newPage)->save();
-
-            $newPage = [
-                'title'           => 'Test page title2',
-                'identifier'      => 'test-page2',
-                'stores'          => [0],
-                'is_active'       => 1,
-                'content_heading' => 'Test page heading2',
-                'content'         => 'Test page content2',
-                'page_layout'     => '1column'
-            ];
-            $this->pageFactory->create()->setData($newPage)->save();
-            
-            // CMS Blocks
-            $newBlock = [
-                'title'      => 'Test block title1',
-                'identifier' => 'test-block1',
-                'stores'     => [0],
-                'is_active'  => 1,
-                'content'    => 'Sample content'
-            ];
-            $this->blockFactory->create()->setData($newBlock)->save();
-            $newBlock = [
-                'title'      => 'Test block title2',
-                'identifier' => 'test-block2',
-                'stores'     => [0],
-                'is_active'  => 1,
-                'content'    => 'Sample content'
-            ];
-            $this->blockFactory->create()->setData($newBlock)->save();
-        }
+Arguments:
+ cmsType               pages, blocks, all
+    
 ```
-## Need to update multiple times?
-```php
-if (version_compare($context->getVersion(), '1.2.0', '=')) {
-
-                ...
-
-        }
-if (version_compare($context->getVersion(), '1.3.0', '=')) {
-
-                ...
-
-        }
-```
-Make sure you update the version in `/etc/module.xml` accordingly.
-
-### Example:
-
-From:
-
-`<module name="Space48_CmsContent" setup_version="1.2.0">`
-
-to:
-
-`<module name="Space48_CmsContent" setup_version="1.3.0">`
