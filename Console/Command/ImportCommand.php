@@ -66,18 +66,15 @@ class ImportCommand extends Command
             case 'pages':
                 $output->writeln('Importing CMS Pages...');
                 $this->cmsPages->Import(['Space48_CmsContent::fixtures/pages/pages.csv']);
-                return 0;
                 break;
             case 'blocks':
                 $output->writeln('Importing CMS Blocks...');
                 $this->cmsBlocks->Import(['Space48_CmsContent::fixtures/blocks/blocks.csv']);
-                return 0;
                 break;
             case 'all':
                 $output->writeln('Importing CMS Pages and Blocks...');
                 $this->cmsBlocks->Import(['Space48_CmsContent::fixtures/blocks/blocks.csv']);
                 $this->cmsPages->Import(['Space48_CmsContent::fixtures/pages/pages.csv']);
-
                 break;
             default:
                 $output->writeln('Param specified is not correct');
