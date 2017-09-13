@@ -2,7 +2,7 @@
     "name": "space48/cmscontent",
     "description": "Magento2 module to programmatically create and update CMS content",
     "type": "magento2-module",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "license": [
         "proprietary"
     ],
