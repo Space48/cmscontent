@@ -127,7 +127,7 @@ class Block implements CmsInterface
                 'title'      => $block->getData('title'),
                 'identifier' => $block->getData('identifier'),
                 'content'    => $block->getData('content'),
-                'is_active'  => $block->getData('active')
+                'is_active'  => $block->getData('is_active')
             ];
         }
 
