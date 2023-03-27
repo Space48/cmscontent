@@ -12,8 +12,8 @@
         }
     },
     "require": {
-        "php": "~7.0|~7.1",
-        "magento/framework": "100.*|101.*|102.*"
+        "php": "~7.0|~7.1|~7.4.0|~8.1.0",
+        "magento/framework": ">=100.*"
         },
     "require-dev": {
         "magento/marketplace-eqp": "~1.0.5",
